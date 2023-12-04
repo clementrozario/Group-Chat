@@ -1,40 +1,26 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
+async function signup(e) {
+    try {
+        e.preventDefault();
 
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault();
+        const signupDetails = {
+            name: e.target.name.value,
+            email: e.target.email.value,
+            phone: e.target.phone.value,
+            password: e.target.password.value
+        };
 
-        // Validate form fields
-        const name = form.querySelector('#name').value;
-        const email = form.querySelector('#email').value;
-        const phone = form.querySelector('#phone').value;
-        const password = form.querySelector('#password').value;
+        const response = await axios.post('http://localhost:3000/api/users/signup', signupDetails);
 
-        if (!name || !email || !phone || !password) {
-            alert('All fields are required');
-            return;
+        if (response.status === 201) {
+            alert('Successfully signed up!');
+            window.location.href = './login.html'; // Redirect to login page on successful signup
+        } else if (response.status === 409) {
+            alert('User already exists. Please Login.');
+        } else {
+            throw new Error('Failed to signup');
         }
 
-        // Send data to the server
-        try {
-            const response = await axios.post('http://localhost:3000/signup', {
-                name,
-                email,
-                phone,
-                password,
-            });
-
-            const data = response.data;
-
-            if (response.status === 201) {
-                alert('Sign up successful!');
-                // Optionally, redirect to a new page or update UI
-            } else {
-                alert(`Error: ${data.message}`);
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            alert('Internal Server Error');
-        }
-    });
-});
+    } catch (err) {
+        console.error('Error:', err);
+    }
+}
