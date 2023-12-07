@@ -1,20 +1,19 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const User = require('../models/userModel');
 
-const authenticate = (req, res, next) => {
+exports.authenticate = (req, res, next) => {
     try {
         const token = req.header('Authorization');
-        const user = jwt.verify(token, 'secretkey');
-        User.findByPk(user.userId).then(user => {
+        const user = jwt.verify(token, 'secret')
+        User.findByPk(user.userId)
+        .then(user => {
+            // console.log(JSON.stringify(user));
             req.user = user;
             next();
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(401).json({ success: false });
+        }).catch (err => {
+            console.log(err)})
+    } catch(err) {
+        console.log(err);
+        return res.status(401).json({success: false})
     }
-};
-
-module.exports = {
-    authenticate,
-};
+}

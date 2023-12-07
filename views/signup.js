@@ -1,3 +1,5 @@
+// signup.js
+
 async function signup(e) {
     try {
         e.preventDefault();
@@ -9,7 +11,7 @@ async function signup(e) {
             password: e.target.password.value
         };
 
-        const response = await axios.post('http://localhost:3000/api/users/signup', signupDetails);
+        const response = await axios.post('http://localhost:3000/user/signup', signupDetails);
 
         if (response.status === 201) {
             alert('Successfully signed up!');
@@ -24,3 +26,6 @@ async function signup(e) {
         console.error('Error:', err);
     }
 }
+
+// Attach the event listener to the form with the id "signupForm"
+document.getElementById('signupForm').addEventListener('submit', signup);
