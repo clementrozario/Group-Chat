@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,15 +7,22 @@
 <body>
     <nav>
         <p id="userName" class="navName"></p>
+
+    <div id="chat-container">
+        <nav>
+            <div>
+                <h2>Chat App</h2>
+            </div>
+            <p id="userName" class="navName"></p>
+        </nav>
+        <div id="chat-messages"></div>
         <div>
-            <h2>Chat App</h2>
+            <input type="text" id="message-input" placeholder="Type your message">
+            <button id="send-button">Send</button>
         </div>
     </nav>
-    <div>
-        <input type="text" placeholder="Type a message..." id="messageInput"/>
-        <button>Send</button>
-    </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="./chat.js"></script>
 </body>
 </html>

@@ -14,7 +14,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: 'http://127.0.0.1:5500' }));
 
 // Serve HTML files from the 'views' folder
-app.use(express.static('./views'));
+const staticPath = path.join(__dirname, './views'); 
+app.use(express.static(staticPath));
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views/signup.html'));
@@ -22,11 +24,17 @@ app.get('/', (req, res) => {
 
 // Routes
 const userRoutes = require('./routes/userRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 
 app.use('/user', userRoutes);
+app.use('/chat', chatRoutes);
 
 // Models
 const User = require('./models/userModel');
+const Chat = require('./models/chatModel');
+
+User.hasMany(Chat);
+Chat.belongsTo(User);
 
 // Sync and server start
 sequelize.sync()
