@@ -12,11 +12,12 @@ exports.postChat = async (req, res, next) => {
     }
 }
 
-exports.getChat = async (req, res, next) =>{
-    try{
-        const allChat = await Chat.findAll({where: {userId: req.user.id}})
-        res.status(200).json({allMessage: allChat})
+exports.getChat = async (req, res, next) => {
+    try {
+        const allChat = await Chat.findAll({ where: { userId: req.user.id } });
+        res.status(200).json({ allMessage: allChat });
     } catch (err) {
         console.log('Error While Getting Chat!', err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-}
+};
