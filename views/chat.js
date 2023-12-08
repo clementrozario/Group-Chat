@@ -1,8 +1,25 @@
+// chat.js
+
 window.addEventListener("DOMContentLoaded", () => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const decoded = parseJwt(token);
     document.getElementById('userName').textContent = decoded.name;
-})
+
+    // Fetch messages when the page is loaded or refreshed
+    axios.get("http://localhost:3000/chat/get-chat", {
+        headers: { "Authorization": token }
+    })
+        .then((response) => {
+            const allMessages = response.data.allMessage;
+
+            allMessages.forEach((message) => {
+                displayMessage('You', message.message);
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching chat:", error);
+        });
+});
 
 function parseJwt(token) {
     var base64Url = token.split('.')[1];
@@ -12,26 +29,42 @@ function parseJwt(token) {
     }).join(''));
     return JSON.parse(jsonPayload);
 }
+
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const chatMessages = document.getElementById('chat-messages');
 
+// Load existing messages from local storage
+const storedMessages = JSON.parse(localStorage.getItem('chatMessages')) || [];
+storedMessages.forEach((message) => {
+    displayMessage(message.sender, message.text);
+});
+
 sendButton.addEventListener('click', () => {
-    const userId = localStorage.getItem('userId')
+    const userId = localStorage.getItem('userId');
     const message = messageInput.value;
     const obj = {
         message,
         userId
-    }
+    };
+
     if (message) {
         axios.post("http://localhost:3000/chat/add-chat", obj)
-        .then((response)=>{
-            displayMessage('You', response.data.message);
-        })
+            .then((response) => {
+                const newMessage = { sender: 'You', text: response.data.message };
+                displayMessage(newMessage.sender, newMessage.text);
+
+                // Save the new message to local storage
+                const updatedMessages = [...storedMessages, newMessage];
+                localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
+            })
+            .catch((error) => {
+                console.error("Error adding chat:", error);
+            });
+
         messageInput.value = '';
     }
 });
-
 
 function displayMessage(sender, text) {
     const messageDiv = document.createElement('div');
