@@ -1,24 +1,23 @@
 // chat.js
 
+let token;
+
 window.addEventListener("DOMContentLoaded", () => {
-    const token = localStorage.getItem('token');
-    const decoded = parseJwt(token);
-    document.getElementById('userName').textContent = decoded.name;
-
-    // Fetch messages when the page is loaded or refreshed
-    axios.get("http://localhost:3000/chat/get-chat", {
-        headers: { "Authorization": token }
-    })
-        .then((response) => {
-            const allMessages = response.data.allMessage;
-
-            allMessages.forEach((message) => {
-                displayMessage('You', message.message);
-            });
-        })
-        .catch((error) => {
-            console.error("Error fetching chat:", error);
-        });
+    // Update the variable assignment here
+    token = localStorage.getItem('token');
+    
+    if (token) {
+        const decoded = parseJwt(token);
+        document.getElementById('userName').textContent = decoded.name;
+        
+        // Fetch messages when the page is loaded
+        fetchMessages();
+        
+        // Poll for new messages every 1 second
+        setInterval(fetchMessages, 1000);
+    } else {
+        console.error("Token not found in localStorage");
+    }
 });
 
 function parseJwt(token) {
@@ -65,6 +64,22 @@ sendButton.addEventListener('click', () => {
         messageInput.value = '';
     }
 });
+
+function fetchMessages() {
+    axios.get("http://localhost:3000/chat/get-chat", {
+        headers: { "Authorization": token }
+    })
+        .then((response) => {
+            const allMessages = response.data.allMessage;
+
+            allMessages.forEach((message) => {
+                displayMessage('You', message.message);
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching chat:", error);
+        });
+}
 
 function displayMessage(sender, text) {
     const messageDiv = document.createElement('div');

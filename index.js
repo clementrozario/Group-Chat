@@ -4,13 +4,13 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./utils/database');
-const cors = require('cors');
 const path=require('path');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+const cors = require('cors');
 app.use(cors({ origin: 'http://127.0.0.1:5500' }));
 
 // Serve HTML files from the 'views' folder
