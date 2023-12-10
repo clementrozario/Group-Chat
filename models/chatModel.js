@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize');
-
 const sequelize = require('../utils/database');
-
 
 const Chat = sequelize.define('chat', {
     id: {
@@ -13,7 +11,5 @@ const Chat = sequelize.define('chat', {
     message: Sequelize.STRING,
     name: Sequelize.STRING
 });
-
-
 
 module.exports = Chat;
