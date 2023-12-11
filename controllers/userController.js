@@ -1,48 +1,54 @@
 const User = require('../models/userModel');
+const Group = require('../models/groupModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const generateToken = (id, name) => {
-    return jwt.sign({ userId: id, name: name }, 'secret');
-};
-
 exports.signupUser = async (req, res, next) => {
     try {
-        const { name, email, phone, password } = req.body;
+        const name = req.body.name;
+        const email = req.body.email;
+        const phone = req.body.phone;
+        const password = req.body.password;
 
-        // Check if the user already exists
         const existingUser = await User.findOne({ where: { email: email } });
 
         if (existingUser) {
-            return res.status(409).json({ message: "User Already Exists!" });
+            return res.json({ message: "User Already Exists!" });
         }
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        bcrypt.hash(password, 10, async (err, hash) => {
+            if (err) {
+                return res.status(500).json({ success: false, message: "Error hashing password" });
+            }
 
-        // Create a new user
-        const user = await User.create({
-            name: name,
-            email: email,
-            phone: phone,
-            password: hashedPassword
+            try {
+                const user = await User.create({
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    password: hash
+                });
+
+                const group = await Group.findByPk(1);
+                await user.addGroup(group);
+
+                return res.status(201).json({ message: "User Signup Successful!" });
+            } catch (err) {
+                console.log(err);
+                return res.status(500).json({ success: false, message: "Error creating user" });
+            }
         });
-
-        // You can customize the response or add additional logic here if needed
-
-        res.status(201).json({ message: "User Signup Successfully!" });
     } catch (err) {
-        console.error('Error:', err);
-
-        // Return a generic error message to the client
-        res.status(500).json({ message: "Internal Server Error" });
+        console.log(err);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
-
 exports.loginUser = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const email = req.body.email;
+        const password = req.body.password;
+
         const user = await User.findOne({ where: { email: email } });
 
         if (!user) {
@@ -54,20 +60,38 @@ exports.loginUser = async (req, res, next) => {
                 return res.status(500).json({ success: false, message: "Something went wrong" });
             }
 
-            if (response === true) {
+            if (response) {
                 const token = generateToken(user.id, user.name);
-                return res.status(200).json({
-                    success: true,
-                    message: "Login Successfully",
-                    userId: user.id,
-                    token: token
-                });
+                return res.status(200).json({ success: true, message: "Login Successful", userId: user.id, token: token });
             } else {
                 return res.json({ success: false, message: "Password is incorrect" });
             }
         });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ success: false, message: "Something went wrong" });
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
+
+const generateToken = (id, name) => {
+    return jwt.sign({ userId: id, name: name }, 'secret');
+};
+
+exports.showParticipants = async (req, res, next) => {
+    try {
+        const groupid = req.params.id;
+        const group = await Group.findByPk(groupid);
+        const usersInGroup = await group.getUsers();
+        const users = await User.findAll();
+        const usersNotInGroup = users.filter(user => !usersInGroup.some(userInGrp => userInGrp.id === user.id));
+        const mappedUser = usersNotInGroup.map(user => ({
+            id: user.id,
+            name: user.name
+        }));
+
+        res.json({ users: mappedUser });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
