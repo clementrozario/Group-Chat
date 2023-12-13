@@ -103,7 +103,14 @@ function getGroup(group, id) {
 }
 
 function showGroup(id) {
+    // Assuming `socket` is declared and connected to the Socket.IO server
+
+    socket.on('message', (message) => {
+        displayMessage('name', message);
+    });
+
     showGroupMessage(id);
+
     localStorage.setItem("groupId", id);
     document.getElementById("chat-container").style.display = "block";
     document.querySelector(".main").style.display = "grid";
@@ -128,6 +135,9 @@ function showGroup(id) {
             users.forEach(user => {
                 groupElm.innerHTML += `<div class="group" onclick="showEdits(${user.id},${id})">${user.name}</div>`;
             });
+        })
+        .catch(error => {
+            console.error('Error fetching group information:', error);
         });
 }
 

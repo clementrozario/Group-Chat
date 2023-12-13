@@ -3,7 +3,27 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./utils/database')
+const http = require('http');
 const app = express();
+
+const server = http.createServer(app);
+const socketIo = require('socket.io');
+const io = require('socket.io')(server);
+
+
+io.on('connection', (socket) => {
+    socket.on('join-group', (groupId) => {
+        socket.join(groupId);
+    });
+
+    socket.on('user-message', (data) => {
+        const { groupId, message } = data;
+        
+        // Broadcast the message to all clients in the group
+        io.to(groupId).emit('message', message);
+    });
+});
+
 
 app.use(bodyParser.json({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,6 +77,6 @@ sequelize
         return group;
     })
     .then(result => {
-        app.listen(process.env.PORT || 3000);
+        server.listen(process.env.PORT || 3000);
     })
     .catch(err => console.log(err))
