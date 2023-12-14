@@ -1,0 +1,264 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    padding: 12px;
+    justify-content: center;
+    background-color: #ccc;
+}
+
+.main {
+    display: block;
+    grid-template-columns: 75% 25%;
+}
+
+.menu {
+    background: linear-gradient(135deg, #8fd9fe, #fde2ff, #f7c7fc, #b1afff, #a0abff);
+    margin: 10% auto;
+    display: block;
+    max-width: 250px;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    max-height: 550px;
+}
+
+.group {
+    cursor: pointer;
+    margin: 2px 30px;
+    padding: 7px;
+    background: #5E5DF0;
+    text-align: center;
+    color: beige;
+    border-radius: 8px;
+    font-weight: 625;
+}
+
+.grpscr,
+.menuscr {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    max-height: 300px;
+}
+
+.chat-container {
+    display: none;
+    padding: 20px;
+}
+
+.chat-messages {
+    border: 1px solid #ccc;
+    height: 400px;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.message-input {
+    width: 70%;
+    padding: 5px;
+    border-radius: 7px;
+}
+
+.btn,
+.btn1 {
+    background: #4CAF50; /* Green background */
+    border: 1px solid #000; /* Black border */
+    color: #000000; /* Black text */
+    border-radius: 7px;
+    box-shadow: #5E5DF0 0 10px 20px -10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+    font-size: 16px;
+    line-height: 15px;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 6px 12px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    margin: 5px;
+}
+
+.btn:hover,
+.btn1:hover {
+    background: #45a049; /* Darker green on hover */
+}
+
+.popup,
+.popup1,
+.popup2,
+.popup3 {
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.popup-content,
+.popup-content1,
+.popup-content2,
+.popup-content3 {
+    height: 250px;
+    width: 500px;
+    background: linear-gradient(135deg, #8fd9fe, #fde2ff, #f7c7fc, #b1afff, #a0abff);
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.popup-content input {
+    margin: 20px auto;
+    display: block;
+    width: 50%;
+    padding: 8px;
+    border: 1px solid gray;
+}
+
+.close,
+.close1,
+.close2,
+.close3 {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.navbar {
+    margin: auto;
+    padding: 0.5rem 1.5rem;
+    background: linear-gradient(135deg, #8fd9fe, #fde2ff, #f7c7fc, #b1afff, #a0abff);
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link,
+.drop-down li {
+    list-style: none;
+    height: 100%;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: currentColor;
+}
+
+.drop-down {
+    position: absolute;
+    padding: 0.5rem 0;
+    margin: 0.5rem 4rem;
+    background: linear-gradient(135deg, #57bef1, #e98ef0, #e863f7, #b7b5f5, #a0abff);
+    color: black;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    display: none;
+}
+
+.nav-link:hover {
+    background-color: rgb(137, 6, 6);
+    color: #fff;
+    border-radius: 0.5rem;
+}
+
+.services:hover .drop-down {
+    display: block;
+}
+
+.services a {
+    display: flex;
+    align-items: center;
+}
+
+.services .dropdown-icon {
+    font-size: 18px;
+    position: relative;
+    right: -5px;
+    transform: rotate(0deg);
+    transition: 0.3s ease-in-out all;
+}
+
+.services:hover .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.drop-down li:hover {
+    background: rgb(137, 6, 6);
+    color: #fff;
+    border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar{
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb{
+    background: linear-gradient(#9d0a65, #ff22e6);
+    border-radius: 10px;
+}
+
+@media (max-width: 950px){
+    .menu{
+        padding: 5px;
+    }
+    .group{
+        margin: 2px 20px;
+    }
+}
+
+@media (max-width: 600px){
+    .menu{
+        padding: 2px;
+    }
+    .group{
+        margin: 2px 7px;
+    }
+}
+
+/* Adding styles for buttons on the right side */
+.btn2,
+.btn3,
+.btn4 {
+    background: #4CAF50; /* Green background */
+    border: 1px solid #000; /* Black border */
+    color: #000000; /* Black text */
+    border-radius: 7px;
+    box-shadow: #5E5DF0 0 10px 20px -10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
+    font-size: 16px;
+    line-height: 15px;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 6px 12px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    margin: 5px;
+}
+
+

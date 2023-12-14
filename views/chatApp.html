@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./css/chatApp.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <title>Group Chat App</title>
+</head>
+<body>
+    <div class="main">
+        <div id="chat-container" class="chat-container">
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <li class="nav-link" id="groupName">
+                    </li>
+                    <li class="nav-link services">
+                        <a href="#">Group Setting
+                            <span class="material-icons dropdown-icon">
+                                arrow_drop_down
+                            </span>
+                        </a>
+                        <ul class="drop-down">
+                            <li id="addPar">Add Participant</li>
+                            <li onclick="participantFn()">Participants</li>
+                            <li id="deleteGroup">Delete Group</li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div id="chat-messages" class="chat-messages"></div>
+            <form onsubmit="uploadFiles(event)">
+                <input type="file" id="file" accept="image/*"></input>
+                <button class="btn" type="submit">Send File</button>
+            </form>
+            <div>
+                <input type="text" id="message-input" class="message-input" placeholder="Type your message">
+                <button id="send-button" class="btn">Send</button>
+            </div>
+        </div>
+        <div class="menu" >
+            <div class="menuscr">
+                <ul id="userName"></ul>
+                <button id="groupButton" class="btn">Create Group</button>
+                <button onclick="redirectLogin()" class="btn">Logout</button>
+                <div id="menu"></div>
+            </div>
+            <div id="group" class="grpscr"></div>
+        </div>
+    </div>
+    <div class="popup">
+        <div class="popup-content">
+            <img src="./css/cancel.png" alt="close" class="close">
+            <h2>Create Group</h2>
+            <form onsubmit="createGroup(event)">
+                <input type="text" name="groupName" placeholder="Enter Group Name">
+                <button type="submit">Create</button>
+            </form>
+        </div>
+    </div>
+    <div class="popup1">
+        <div class="popup-content1">
+            <img src="./css/cancel.png" alt="close" class="close1">
+            <h2>Add Participants</h2>
+            <input type="search" id="search" name="q" placeholder="Find users">
+            <form onsubmit="addParticipant(event)" id="addParticipant">
+            </form>
+        </div>
+    </div>
+    <div class="popup2">
+        <div class="popup-content2">
+            <img src="./css/cancel.png" alt="close" class="close2">
+            <h2>User Action</h2>
+            <div id="userAction">
+            </div>
+        </div>
+    </div>
+    <div class="popup3">
+        <div class="popup-content3">
+            <img src="./css/cancel.png" alt="close" class="close3">
+            <h2>Participants</h2>
+            <div id="groupParticipant">
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="./chatApp.js"></script>
+</body>
+</html>
