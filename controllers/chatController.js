@@ -18,6 +18,7 @@ const cron = require('node-cron');
 //     })
 
 //     await Chat.destroy({ where: { createdAt: { [Op.lt]: currentTimestamp } } })
+// console.log("cron done");
 // });
 
 exports.postChat = async (req, res, next) => {
