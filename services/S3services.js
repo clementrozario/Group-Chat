@@ -31,4 +31,4 @@ exports.uploadToS3 = (file) => {
     })
 }
 
-//mumbai is selected
+

@@ -16,7 +16,7 @@ async function logInUser(event) {
         email, password
     };
     try {
-        const response = await axios.post("http://localhost:3000/user/login", user);
+        const response = await axios.post("http://3.110.103.250:3000/user/login", user);
         if (response.data.success) {
             alert(response.data.message);
             localStorage.setItem('token', response.data.token);
@@ -38,7 +38,7 @@ function saveUser(event) {
     const password = event.target.password1.value;
     const user = { name, email, phone, password };
 
-    axios.post("http://localhost:3000/user/signup", user)
+    axios.post("http://3.110.103.250:3000/user/signup", user)
         .then(response => {
             console.log(response.data); // Log the response for debugging
             alert(response.data.message);

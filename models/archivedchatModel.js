@@ -17,7 +17,3 @@ const AchivedChat = sequelize.define('achivedchat', {
 
 module.exports = AchivedChat;
 
-
-
-
-// created to move the chats to make faster by using cron

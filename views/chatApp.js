@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem('token')
     const decoded = parseJwt(token);
     document.getElementById('userName').textContent = decoded.name;
-    axios.get(`http://localhost:3000/group/show-group`, { headers: { "Authorization": token } })
+    axios.get(`http://3.110.103.250:3000/group/show-group`, { headers: { "Authorization": token } })
         .then(res => {
             const userGroups = res.data.groups
             userGroups.forEach((group) => {
@@ -76,7 +76,7 @@ async function uploadFiles(event) {
         formData.append("userId", userId);
         formData.append("groupId", groupId);
         try {
-            await axios.post("http://localhost:3000/chat/add-file", formData)
+            await axios.post("http://3.110.103.250:3000/chat/add-file", formData)
                 .then((response) => {
                     console.log(response.data)
                     displayimage('You', response.data.message);
@@ -103,7 +103,7 @@ sendButton.addEventListener('click', () => {
         groupId
     }
     if (message) {
-        axios.post("http://localhost:3000/chat/add-chat", obj)
+        axios.post("http://3.110.103.250:3000/chat/add-chat", obj)
             .then((response) => {
                 // socket.emit('user-message', message)
                 displayMessage('You', response.data.message);
@@ -126,7 +126,7 @@ function createGroup(event) {
     const token = localStorage.getItem('token')
     event.preventDefault();
     const groupName = event.target.groupName.value;
-    axios.post("http://localhost:3000/group/create-group", { groupName }, { headers: { "Authorization": token } })
+    axios.post("http://3.110.103.250:3000/group/create-group", { groupName }, { headers: { "Authorization": token } })
         .then(response => {
             alert(response.data.message)
             console.log(response.data.group)
@@ -136,7 +136,7 @@ function createGroup(event) {
 }
 
 function deleteGroup(groupid) {
-    axios.delete(`http://localhost:3000/group/delete-group/${groupid}`)
+    axios.delete(`http://3.110.103.250:3000/group/delete-group/${groupid}`)
         .then(response => {
             alert(response.data.message);
 
@@ -161,7 +161,7 @@ function showGroup(id) {
     const token = localStorage.getItem('token')
     const groupElm = document.getElementById("group")
     groupElm.innerHTML = '';
-    axios.get(`http://localhost:3000/group/get-group/${id}`, { headers: { "Authorization": token } })
+    axios.get(`http://3.110.103.250:3000/group/get-group/${id}`, { headers: { "Authorization": token } })
         .then(response => {
             groupElm.innerHTML += `<h2>${response.data.group.groupname}</h2>
                                 <button class="btn1" onclick="showParticipants('${response.data.group.id}')">Add Participants</button>`;
@@ -177,7 +177,7 @@ function showEdits(userId, groupId) {
     document.querySelector(".popup2").style.display = "flex";
     const usersElm = document.getElementById("userAction");
     usersElm.innerHTML = '';
-    axios.get(`http://localhost:3000/user/get-user-data/${userId}?groupid=${groupId}`)
+    axios.get(`http://3.110.103.250:3000/user/get-user-data/${userId}?groupid=${groupId}`)
         .then(response => {
             const userData = response.data.user
             if (userData[0].admin === true) {
@@ -205,7 +205,7 @@ function addParticipant(event) {
     const selectedIds = Array.from(checkboxes).map(checkbox => checkbox.value);
     console.log(selectedIds);
     console.log(groupId);
-    axios.post(`http://localhost:3000/group/add-participants/${groupId}`, selectedIds)
+    axios.post(`http://3.110.103.250:3000/group/add-participants/${groupId}`, selectedIds)
         .then(response => {
             if (response.status === 201) {
                 alert(response.data.message);
@@ -226,7 +226,7 @@ function showGroupMessage(groupid) {
     let lastMsgId = oldChat.length > 0 ? oldChat[oldChat.length - 1].id : 0;
     const name = parseJwt(token).name;
     // setInterval(() => {
-    axios.get(`http://localhost:3000/chat/get-group-chat/${groupid}?lastmsgid=${lastMsgId}`, { headers: { "Authorization": token } })
+    axios.get(`http://3.110.103.250:3000/chat/get-group-chat/${groupid}?lastmsgid=${lastMsgId}`, { headers: { "Authorization": token } })
         .then((response) => {
             const newMessages = response.data.allMessage;
             chatMessages.innerHTML = '';
@@ -255,7 +255,7 @@ function participantFn() {
     document.querySelector(".popup3").style.display = "flex";
     const usersElm = document.getElementById("groupParticipant")
     usersElm.innerHTML = '';
-    axios.get(`http://localhost:3000/user/get-participants/${groupId}`, { headers: { "Authorization": token } })
+    axios.get(`http://3.110.103.250:3000/user/get-participants/${groupId}`, { headers: { "Authorization": token } })
         .then(response => {
             const participants = response.data.users;
             const requestUserisAdmin = response.data.admin;
@@ -287,7 +287,7 @@ function participantFn() {
 
 function makeAdmin(userId, groupId) {
     const obj = { userId, groupId };
-    axios.post(`http://localhost:3000/group/make-admin`, obj)
+    axios.post(`http://3.110.103.250:3000/group/make-admin`, obj)
         .then(response => {
             alert(response.data.message);
             participantFn()
@@ -296,7 +296,7 @@ function makeAdmin(userId, groupId) {
 
 function removeAdmin(userId, groupId) {
     const obj = { userId, groupId };
-    axios.post(`http://localhost:3000/group/remove-admin`, obj)
+    axios.post(`http://3.110.103.250:3000/group/remove-admin`, obj)
         .then(response => {
             alert(response.data.message);
             participantFn()
@@ -305,7 +305,7 @@ function removeAdmin(userId, groupId) {
 
 function removeFromGroup(userId, groupId) {
     const obj = { userId, groupId };
-    axios.post(`http://localhost:3000/group/remove-from-group`, obj)
+    axios.post(`http://3.110.103.250:3000/group/remove-from-group`, obj)
         .then(response => {
             console.log(response);
             alert(response.data.message);
@@ -321,7 +321,7 @@ searchBar.addEventListener('input', event => {
         const groupId = localStorage.getItem('groupId')
         const searchQuery = event.target.value;;
         const usersElm = document.getElementById("addParticipant")
-        axios.get(`http://localhost:3000/admin/search/${groupId}?searchQuery=${searchQuery}`)
+        axios.get(`http://3.110.103.250:3000/admin/search/${groupId}?searchQuery=${searchQuery}`)
             .then(response => {
                 const users = response.data.users;
                 usersElm.innerHTML = '';
