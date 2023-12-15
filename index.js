@@ -89,4 +89,4 @@ sequelize
     })
     .catch(err => console.log(err))
 
-    
+    // polling is made
