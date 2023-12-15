@@ -88,3 +88,5 @@ sequelize
         server.listen(process.env.PORT || 3000);
     })
     .catch(err => console.log(err))
+
+    //checking jenkins
